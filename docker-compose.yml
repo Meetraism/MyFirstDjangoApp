@@ -1,0 +1,20 @@
+services:
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:80
+    volumes:
+      - .:/app  # Mount the current directory to /app in the container
+      - ./data:/app/data  # Persist the SQLite database file by mapping the 'data' folder to your container
+ 
+    ports:
+      - "80:80"
+    depends_on:
+      - db
+
+  db:
+    image: nouchka/sqlite3:latest  # You can use SQLite's official image or a custom one
+    volumes:
+      - db_data:/data
+
+volumes:
+  db_data:
